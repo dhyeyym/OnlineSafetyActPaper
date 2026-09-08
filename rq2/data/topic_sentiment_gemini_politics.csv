@@ -1,0 +1,18 @@
+topic_id,label,n_docs,pct_negative,pct_neutral,pct_positive
+0,Ofcom notices & media,59,10.2,88.1,1.7
+1,Technical circumvention,69,14.5,85.5,0.0
+2,OSA circumvention & petitions,194,61.9,34.0,4.1
+3,Subscription costs & ISP services,290,10.0,83.1,6.9
+4,OSA parliamentary debate,266,66.5,26.3,7.1
+5,Moderation,1,100.0,0.0,0.0
+6,Online abuse & harmful content,35,8.6,71.4,20.0
+7,Parliamentary process,14,0.0,100.0,0.0
+8,End-to-end encryption & security,325,48.6,50.5,0.9
+9,OSA general discussion,36686,52.8,40.8,6.3
+10,Government ministers & offices,50,28.0,70.0,2.0
+11,Ofcom & broadcast regulation,347,15.6,82.4,2.0
+12,Platform compliance & liability,355,34.6,56.3,9.0
+13,Child safety & age-restricted content,1512,61.8,27.2,11.0
+14,Free speech & social media,146,37.0,47.3,15.8
+15,Facial recognition & policing,82,53.7,41.5,4.9
+16,Age verification mechanisms,1454,49.4,42.3,8.3
