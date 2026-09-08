@@ -7,10 +7,9 @@ Proceedings on Privacy Enhancing Technologies 2027(X), 1–22.
 ## Repository Structure
 
 ```
-├── ARTIFACT-APPENDIX.md        Artifact evaluation guide (PoPETs format)
-├── LICENSE                     MIT (code) + CC-BY-4.0 (data)
-├── requirements.txt            Python dependencies
-│
+├── ARTIFACT-APPENDIX.md        
+├── LICENSE                     
+├── requirements.txt            
 ├── prompts/                    Exact LLM prompts used in the paper
 │   ├── vpn_relevance.txt           VPN relevance classifier (Appendix B.1)
 │   ├── politics_relevance.txt      Politics relevance classifier (Appendix B.2)
@@ -29,18 +28,27 @@ Proceedings on Privacy Enhancing Technologies 2027(X), 1–22.
 │
 ├── rq1/                        RQ1: Causal Impact
 │   ├── scripts/
-│   │   ├── table_3.py              CausalImpact on classified content (Table 3)
-│   │   ├── table_4.py              CausalImpact on Google Trends (Table 4)
-│   │   ├── table_13.py             Full filter-level breakdown (Table 13)
-│   │   ├── table_14_15.py          Google Trends placebo + date sensitivity
-│   │   ├── table_16.py             Post-window robustness (Table 16)
-│   │   └── table_17.py             UK-residency threshold sensitivity (Table 17)
+│   │   ├── table_3.R               Content + users CausalImpact (Table 3)
+│   │   ├── table_4.R               Google Trends CausalImpact (Table 4)
+│   │   ├── table_12.R              User count effects (Table 12)
+│   │   ├── table_13.R              Full filter-level breakdown (Table 13)
+│   │   ├── table_14_15.R           Google Trends placebo + date sensitivity
+│   │   ├── table_16.R              Post-window robustness (Table 16)
+│   │   └── table_17.R              UK-residency threshold sensitivity (Table 17)
 │   └── data/
 │       ├── index_document.csv
 │       ├── vpn_time_series_classified_hp.csv
 │       ├── politics_time_series_classified_hp.csv
 │       ├── vpn_uk_content_timeseries_strict.csv
 │       ├── politics_uk_content_timeseries_strict.csv
+│       ├── vpn_user_timeseries.csv
+│       ├── vpn_uk_user_timeseries.csv
+│       ├── vpn_user_timeseries_uk_filtered.csv
+│       ├── politics_user_timeseries.csv
+│       ├── politics_uk_user_timeseries.csv
+│       ├── politics_user_timeseries_uk_filtered.csv
+│       ├── combined_uk_user_timeseries.csv
+│       ├── combined_user_timeseries_uk_filtered.csv
 │       ├── google_trends_uk.csv
 │       ├── google_trends_us.csv
 │       ├── table13_weekly_series.csv
@@ -86,16 +94,14 @@ Proceedings on Privacy Enhancing Technologies 2027(X), 1–22.
 ## Quick Verification
 
 ```bash
-pip install tfcausalimpact
+# RQ1 (requires R with CausalImpact package)
+Rscript rq1/scripts/table_3.R
+Rscript rq1/scripts/table_4.R
 
-# RQ1
-python rq1/scripts/table_3.py
-python rq1/scripts/table_4.py
-
-# RQ2
+# RQ2 (requires Python 3.11+)
 cd rq2/scripts && python 07_validation.py recount
 
-# RQ3
+# RQ3 (requires Python 3.11+)
 python rq3/scripts/risk_classifier.py
 ```
 

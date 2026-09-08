@@ -14,8 +14,8 @@ This artifact accompanies the paper *Online Safety Regulation Increases Attentio
 The artifact contains:
 
 1. **LLM classification outputs** for VPN and UK Politics subreddits — relevance labels for all keyword-matched documents, with text and author identifiers removed.
-2. **RQ1 reproduction scripts and data**: Python scripts to reproduce the Bayesian Structural Time Series analyses reported in Tables 3, 4, 13, 14, 15, 16, and 17, along with the frozen weekly time series, Google Trends data, and the per-document index (with sensitive fields removed).
-3. **RQ2 analysis code and data**: the complete pipeline for discourse framing and sentiment analysis, including the UK-resident corpus (identifiers only), LDA topic assignments, sentiment labels from two models (RoBERTa and Gemini), coherence sweep data, topic prevalence, and topic-level sentiment cross-tabulations.
+2. **RQ1 reproduction scripts and data**: R scripts using the `CausalImpact` package to reproduce the Bayesian Structural Time Series analyses reported in Tables 3, 4, 12, 13, 14, 15, 16, and 17, along with the frozen weekly time series, Google Trends data, user count series, and the per-document index (with sensitive fields removed).
+3. **RQ2 analysis code and data**: the complete Python pipeline for discourse framing and sentiment analysis, including the UK-resident corpus (identifiers only), LDA topic assignments, sentiment labels from two models (RoBERTa and Gemini), coherence sweep data, topic prevalence, and topic-level sentiment cross-tabulations.
 4. **RQ3 dataset and code**: 69 VPN service privacy-policy records with six extracted privacy markers, monthly UK Google Trends attention, and the deterministic risk classifier script.
 5. **LLM prompts**: exact prompts used for relevance classification, sentiment classification, and topic summarisation (Appendix B of the paper).
 
@@ -35,34 +35,24 @@ GPU recommended but not required for `03_sentiment_cardiff.py` (RoBERTa inferenc
 
 ### Software Requirements
 
-- **OS**: Tested on Windows 11 and Ubuntu 22.04. Should work on any OS with Python 3.11+.
-- **Python**: 3.11+
+- **OS**: Tested on Windows 11 and Ubuntu 22.04.
+- **R**: 4.3+ with the `CausalImpact` and `zoo` packages (for RQ1).
+- **Python**: 3.11+ (for RQ2 and RQ3).
 - **Python packages** (see `requirements.txt`):
-  - `pandas >= 2.0`
-  - `numpy >= 1.24`
-  - `gensim >= 4.3` (LDA topic modelling)
-  - `spacy >= 3.7` with `en_core_web_sm` model
-  - `transformers >= 4.35` (RoBERTa sentiment)
-  - `torch >= 2.1`
-  - `scipy >= 1.11`
-  - `matplotlib >= 3.8`
-  - `tqdm`
-  - `httpx` (async HTTP for Gemini API)
-  - `tfcausalimpact` (Bayesian Structural Time Series for RQ1)
+  - `pandas >= 2.0`, `numpy >= 1.24`, `gensim >= 4.3`, `spacy >= 3.7` with `en_core_web_sm`, `transformers >= 4.35`, `torch >= 2.1`, `scipy >= 1.11`, `matplotlib >= 3.8`, `tqdm`, `httpx`
 - **API keys**: Gemini API key required only for `04_sentiment_gemini.py` and `06_summarise_topics.py` (set via `GEMINI_KEY` environment variable). Not required for reviewing frozen outputs.
-
-No other software is required.
 
 ### Estimated Time and Storage Consumption
 
 | Component | Time | Storage |
 |---|---|---|
-| RQ1 Table 3 (`table_3.py`) | ~5 min | <1 MB |
-| RQ1 Table 4 (`table_4.py`) | ~5 min | <1 MB |
-| RQ1 Table 13 (`table_13.py`) | ~30 min | <1 MB |
-| RQ1 Tables 14–15 (`table_14_15.py`) | ~3 min | <1 MB |
-| RQ1 Table 16 (`table_16.py`) | ~15 min | <1 MB |
-| RQ1 Table 17 (`table_17.py`) | ~20 min | <1 MB |
+| RQ1 Table 3 (`table_3.R`) | ~10 min | <1 MB |
+| RQ1 Table 4 (`table_4.R`) | ~5 min | <1 MB |
+| RQ1 Table 12 (`table_12.R`) | ~15 min | <1 MB |
+| RQ1 Table 13 (`table_13.R`) | ~45 min | <1 MB |
+| RQ1 Tables 14–15 (`table_14_15.R`) | ~3 min | <1 MB |
+| RQ1 Table 16 (`table_16.R`) | ~10 min | <1 MB |
+| RQ1 Table 17 (`table_17.R`) | ~20 min | <1 MB |
 | RQ2 topic × sentiment (`05_topic_sentiment.py`) | <1 min | <1 MB |
 | RQ2 validation (`07_validation.py`) | <1 min | — |
 | RQ3 risk classification (`risk_classifier.py`) | <1 min | — |
@@ -79,10 +69,11 @@ The artifact is publicly available at: **[FILL WITH GITHUB/ZENODO URL]**
 ### Set Up the Environment
 
 ```bash
-git clone [REPO_URL]
-cd osa-vpn-artifact
+# R (for RQ1)
+install.packages(c("CausalImpact", "zoo"))
+
+# Python (for RQ2 and RQ3)
 pip install -r requirements.txt
-pip install tfcausalimpact
 python -m spacy download en_core_web_sm
 ```
 
@@ -110,83 +101,95 @@ vpn          2468
 
 #### Main Result 1: RQ1 Causal Impact on Discourse (Tables 3–4)
 
-CausalImpact analysis shows that classified VPN content increased by +328% and classified Politics content increased by +1474% at the Age Verification deadline (July 2025), with no significant change at Royal Assent or Enforcement. UK Google Trends VPN search interest increased by +147%. These results are reproduced by [Experiment 1](#experiment-1-reproduce-table-3) and [Experiment 2](#experiment-2-reproduce-table-4).
+CausalImpact analysis shows that classified VPN content increased by +328% and classified Politics content increased by +1474% at the Age Verification deadline (July 2025), with no significant change at Royal Assent or Enforcement. UK Google Trends VPN search interest increased by +147%. Reproduced by [Experiments 1–2](#experiment-1-reproduce-table-3).
 
-#### Main Result 2: RQ1 Robustness (Tables 13, 14–17)
+#### Main Result 2: RQ1 Robustness (Tables 12–17)
 
-The Age Verification effect holds across all filter levels (Table 13), is not present at placebo dates (Table 14), is stable across platform compliance dates (Table 15), across post-window lengths (Table 16), and strengthens with UK-residency confidence (Table 17). These are reproduced by [Experiments 3–6](#experiment-3-reproduce-table-13).
+The Age Verification effect holds across user counts (Table 12), all filter levels (Table 13), is absent at placebo dates (Table 14), is stable across platform compliance dates (Table 15), across post-window lengths (Table 16), and strengthens with UK-residency confidence (Table 17). Reproduced by [Experiments 3–7](#experiment-3-reproduce-table-12).
 
 #### Main Result 3: RQ2 Discourse Framing (Tables 5–6, Figures 4–5)
 
-LDA identifies K=12 VPN topics and K=17 Politics topics. Sentiment is predominantly negative with near-zero pro-OSA sentiment (4–7% positive). Reproduced by [Experiment 7](#experiment-7-reproduce-rq2-topic-prevalence-and-sentiment).
+LDA identifies K=12 VPN topics and K=17 Politics topics. Sentiment is predominantly negative with near-zero pro-OSA sentiment (4–7% positive). Reproduced by [Experiment 8](#experiment-8-reproduce-rq2-topic-prevalence-and-sentiment).
 
 #### Main Result 4: RQ3 VPN Privacy-Risk Classification (Table 8)
 
-69 VPN services classified into Low (26), Medium (35), and High (8) risk categories. Reproduced by [Experiment 8](#experiment-8-reproduce-rq3-risk-classification).
+69 VPN services classified into Low (26), Medium (35), and High (8) risk categories. Reproduced by [Experiment 9](#experiment-9-reproduce-rq3-risk-classification).
 
 ### Experiments
 
+All RQ1 experiments are run from the artifact root directory.
+
 #### Experiment 1: Reproduce Table 3
 
-- Time: ~5 compute-minutes
+- Time: ~10 compute-minutes
 
 ```bash
-python rq1/scripts/table_3.py
+Rscript rq1/scripts/table_3.R
 ```
 
-Reproduces CausalImpact relative effects for VPN and Politics classified content across three OSA milestones. Results may differ by up to ±5% from the paper due to the stochastic nature of Bayesian Structural Time Series inference.
+Reproduces CausalImpact relative effects for VPN and Politics content volume (posts + comments) and new-user counts across three OSA milestones at four filter levels (Raw, Raw UK, Classified, Classified UK). Output: `rq1/data/table3_reproduced.csv`. Results may differ by up to ±5% from the paper due to the stochastic nature of BSTS posterior sampling.
 
 #### Experiment 2: Reproduce Table 4
 
 - Time: ~5 compute-minutes
 
 ```bash
-python rq1/scripts/table_4.py
+Rscript rq1/scripts/table_4.R
 ```
 
-Reproduces CausalImpact on UK VPN Google Trends search interest under three specifications (no covariate, US covariate, lag-52 covariate).
+Reproduces CausalImpact on UK VPN Google Trends search interest under three specifications (no covariate, US covariate, lag-52 covariate). Output: `rq1/data/table4_reproduced.csv`.
 
-#### Experiment 3: Reproduce Table 13
-
-- Time: ~30 compute-minutes
-
-```bash
-python rq1/scripts/table_13.py
-```
-
-Runs 162 CausalImpact models across 2 groups × 9 filter levels × 3 milestones × 3 metrics. Output: `rq1/data/table13_reproduced.csv`.
-
-#### Experiment 4: Reproduce Tables 14–15
-
-- Time: ~3 compute-minutes
-
-```bash
-python rq1/scripts/table_14_15.py
-```
-
-Table 14: placebo-date pre-trend test with fake intervention dates before Age Verification. Table 15: date-sensitivity test across platform compliance dates.
-
-#### Experiment 5: Reproduce Table 16
+#### Experiment 3: Reproduce Table 12
 
 - Time: ~15 compute-minutes
 
 ```bash
-python rq1/scripts/table_16.py
+Rscript rq1/scripts/table_12.R
 ```
 
-Post-window robustness: re-estimates effects at 4-week, 8-week, and 12-week windows.
+Reproduces user count effects (unique users, new users, cumulative users) across VPN and Politics series. Output: `rq1/data/table12_reproduced.csv`.
 
-#### Experiment 6: Reproduce Table 17
+#### Experiment 4: Reproduce Table 13
+
+- Time: ~45 compute-minutes
+
+```bash
+Rscript rq1/scripts/table_13.R
+```
+
+Runs 162 CausalImpact models across 2 groups × 9 filter levels × 3 milestones × 3 metrics. Output: `rq1/data/table13_reproduced.csv`.
+
+#### Experiment 5: Reproduce Tables 14–15
+
+- Time: ~3 compute-minutes
+
+```bash
+Rscript rq1/scripts/table_14_15.R
+```
+
+Table 14: placebo-date pre-trend test. Table 15: date-sensitivity test across platform compliance dates. Output: `rq1/data/table14_reproduced.csv`, `rq1/data/table15_reproduced.csv`.
+
+#### Experiment 6: Reproduce Table 16
+
+- Time: ~10 compute-minutes
+
+```bash
+Rscript rq1/scripts/table_16.R
+```
+
+Post-window robustness: re-estimates effects at 4-week, 8-week, and 12-week windows. Output: `rq1/data/table16_reproduced.csv`.
+
+#### Experiment 7: Reproduce Table 17
 
 - Time: ~20 compute-minutes
 
 ```bash
-python rq1/scripts/table_17.py
+Rscript rq1/scripts/table_17.R
 ```
 
-UK-residency threshold sensitivity: 60 models across k=1..5 thresholds.
+UK-residency threshold sensitivity across k=1..5. Output: `rq1/data/table17_reproduced.csv`.
 
-#### Experiment 7: Reproduce RQ2 Topic Prevalence and Sentiment (Tables 5–6, Figure 5)
+#### Experiment 8: Reproduce RQ2 Topic Prevalence and Sentiment (Tables 5–6, Figure 5)
 
 - Time: <1 minute
 
@@ -198,7 +201,7 @@ python 07_validation.py recount
 
 Verify that VPN has 12 topics, Politics has 17, prevalence matches Table 5, and sentiment distributions match Table 6.
 
-#### Experiment 8: Reproduce RQ3 Risk Classification (Table 8)
+#### Experiment 9: Reproduce RQ3 Risk Classification (Table 8)
 
 - Time: <1 minute
 
@@ -225,7 +228,7 @@ Classification mismatches vs dataset: 0
   policy_vagueness: 11
 ```
 
-#### Experiment 9: Verify Classification Outputs
+#### Experiment 10: Verify Classification Outputs
 
 - Time: <1 minute
 
@@ -240,7 +243,7 @@ for f in sorted(os.listdir('classification_outputs')):
 "
 ```
 
-#### Experiment 10: Verify Coherence Sweep (Figure 4)
+#### Experiment 11: Verify Coherence Sweep (Figure 4)
 
 - Time: <1 minute
 
@@ -266,7 +269,7 @@ Coherence peaks at K=12 for VPN (C_V = 0.533) and K=17 for Politics (C_V = 0.536
 
 ## Notes on Reusability
 
-- The **RQ1 reproduction scripts** demonstrate how to apply Bayesian Structural Time Series to weekly content and search-interest time series for causal inference around policy milestones.
+- The **RQ1 R scripts** demonstrate how to apply CausalImpact to weekly content and search-interest time series for causal inference around policy milestones, including placebo tests, window robustness, and threshold sensitivity analyses.
 - The **RQ2 pipeline** (scripts 01–07) is a reusable framework for Reddit discourse analysis combining LDA topic modelling with multi-model sentiment classification.
 - The **RQ3 risk classification** is a deterministic, rule-based framework extensible to additional VPN providers.
 - The **LLM prompts** provide templates for relevance classification and sentiment analysis of policy-related social media discourse.
