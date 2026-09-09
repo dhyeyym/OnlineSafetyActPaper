@@ -73,7 +73,7 @@ def run_group(group, full_corpus, uk_corpus):
     assignments = all_probs.argmax(axis=1)
     top_probs   = all_probs.max(axis=1)
 
-    # Prevalence
+    
     mass  = all_probs.sum(axis=0)
     share = mass / mass.sum() * 100
     prev = pd.DataFrame({"topic_id": range(k),
@@ -84,13 +84,13 @@ def run_group(group, full_corpus, uk_corpus):
     prev.to_csv(RESULTS_DIR / f"lda_{group}_prevalence.csv", index=False)
     print(prev[["topic_id", "label", "prevalence_pct"]].to_string(index=False))
 
-    # Assignments
+    
     uk_valid = uk_valid.copy()
     uk_valid["topic_id"]   = assignments
     uk_valid["topic_prob"] = top_probs
     uk_valid.to_csv(RESULTS_DIR / f"lda_{group}_uk_assignments.csv", index=False)
 
-    # Top docs
+    
     rows = []
     for tid in range(k):
         idx = np.where(assignments == tid)[0]
@@ -105,7 +105,7 @@ def run_group(group, full_corpus, uk_corpus):
     pd.DataFrame(rows).to_csv(RESULTS_DIR / f"lda_{group}_topdocs.csv", index=False)
 
 if __name__ == "__main__":
-    full = pd.read_csv(RESULTS_DIR / "rq2_corpus_full.csv")
+    full = pd.read_csv(RESULTS_DIR / "rq2_corpus_all_authors.csv")
     uk   = pd.read_csv(RESULTS_DIR / "rq2_corpus.csv")
     for group in ["vpn", "politics"]:
         run_group(group, full, uk)

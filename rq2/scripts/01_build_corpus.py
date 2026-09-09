@@ -2,7 +2,7 @@
 01_build_corpus.py — Build the RQ2 corpora from classified files.
 
 Outputs:
-  rq2_corpus_full.csv   (all authors — used to FIT the LDA)
+  rq2_corpus_all_authors.csv   (all authors — used to FIT the LDA)
   rq2_corpus.csv        (UK authors only — used for assignment + sentiment)
 """
 import pandas as pd
@@ -84,13 +84,13 @@ if __name__ == "__main__":
 
     full = pd.DataFrame(full_records).drop_duplicates(subset=["author", "text"]).reset_index(drop=True)
     full.index.name = "doc_id"; full = full.reset_index()
-    full.to_csv(RESULTS_DIR / "rq2_corpus_full.csv", index=False)
+    full.to_csv(RESULTS_DIR / "rq2_corpus_all_authors.csv", index=False)
 
     uk = pd.DataFrame(uk_records).drop_duplicates(subset=["author", "text"]).reset_index(drop=True)
     uk.index.name = "doc_id"; uk = uk.reset_index()
     uk.to_csv(RESULTS_DIR / "rq2_corpus.csv", index=False)
 
-    print(f"\nrq2_corpus_full.csv: {len(full):,} docs")
+    print(f"\nrq2_corpus_all_authors.csv: {len(full):,} docs")
     print(full.groupby(["group", "kind"]).size().to_string())
     print(f"\nrq2_corpus.csv (UK): {len(uk):,} docs")
     print(uk.groupby(["group", "kind"]).size().to_string())

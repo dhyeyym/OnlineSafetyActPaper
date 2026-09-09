@@ -43,7 +43,6 @@ def spot_check():
         out.to_csv(RESULTS_DIR / fname, index=False)
         print(f"{group}: {len(out)} rows -> {fname}")
 
-# --- Make blind annotation sample from divergent docs ---
 def make_sample():
     keys = ["group", "kind", "author", "created_utc"]
     corpus  = norm(pd.read_csv(RESULTS_DIR / "rq2_corpus.csv", dtype=str))
@@ -70,7 +69,6 @@ def make_sample():
     key.to_csv(RESULTS_DIR / "adjudication_key.csv", index=False)
     print(f"Sampled {len(sample)}. Wrote adjudication_TOANNOTATE.csv + adjudication_key.csv")
 
-# --- Score annotations ---
 def score_sample():
     annot = pd.read_csv(RESULTS_DIR / "adjudication_TOANNOTATE.csv")
     key = pd.read_csv(RESULTS_DIR / "adjudication_key.csv")
@@ -87,7 +85,6 @@ def score_sample():
         ra = (gdf["human_label"] == gdf["cardiff_label"]).sum()
         print(f"  {grp}: N={k} Gemini {ga/k*100:.0f}% RoBERTa {ra/k*100:.0f}%")
 
-# --- Recount prose numbers ---
 def recount():
     corpus = pd.read_csv(RESULTS_DIR / "rq2_corpus.csv")
     print(f"UK corpus: {len(corpus):,}")

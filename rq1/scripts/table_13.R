@@ -32,7 +32,6 @@ filters <- c("Unmatched (non-UK)", "Unmatched", "Unmatched (UK)", "Raw", "Raw (U
 metrics <- c("posts", "comments", "total")
 
 total <- length(groups) * length(filters) * length(metrics) * length(MILESTONES)
-cat(sprintf("Running %d Table 13 models...\n\n", total))
 
 results <- data.frame(); count <- 0
 for (grp in groups) {

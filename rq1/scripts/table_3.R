@@ -35,12 +35,7 @@ fmt <- function(r) {
   sprintf("%+.1f%%%s", r[1], sig)
 }
 
-# ================================================================
-# CONTENT — from table13_weekly_series.csv
-# ================================================================
-cat("================================================================\n")
 cat("TABLE 3 — Content (posts + comments)\n")
-cat("================================================================\n\n")
 
 weekly <- read.csv(file.path(DATA_DIR, "table13_weekly_series.csv"), stringsAsFactors = FALSE)
 weekly$week <- as.Date(weekly$week)
@@ -70,13 +65,7 @@ for (cr in content_rows) {
   }
 }
 
-# ================================================================
-# USERS — from table12_user_weekly_series.csv (all filter levels)
-# ================================================================
-cat("\n================================================================\n")
 cat("TABLE 3 — Users (new_users)\n")
-cat("================================================================\n\n")
-
 user_file <- file.path(DATA_DIR, "table12_user_weekly_series.csv")
 if (!file.exists(user_file)) {
   cat("WARNING: table12_user_weekly_series.csv not found.\n")
