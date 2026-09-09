@@ -9,7 +9,7 @@ Requested Badge(s):
 
 ## Description
 
-This artifact accompanies the paper *Online Safety Regulation Increases Attention to VPNs: Privacy Implications of the UK Online Safety Act* by Dhyey Mehta, Eldar Jalilzade, Maksim Kalameyets, Rebecca Owens, Marc Juarez, Stergios Aidinlis, Lei Shi, and Tuğrulcan Elmas, published in Proceedings on Privacy Enhancing Technologies 2027(X).
+This artifact accompanies the paper *Online Safety Regulation Increases Attention to VPNs: Privacy Implications of the UK Online Safety Act* by Dhyey Mehta, Eldar Jalilzade, Maksim Kalameyets, Rebecca Owens, Marc Juarez, Stergios Aidinlis, Lei Shi, and Tuğrulcan Elmas, published in Proceedings on Privacy Enhancing Technologies 2027.
 
 The artifact contains:
 
@@ -54,7 +54,7 @@ GPU recommended but not required for `03_sentiment_cardiff.py` (RoBERTa inferenc
 | RQ1 Table 17 (`table_17.R`) | ~20 min | <1 MB |
 | RQ2 verification (`07_validation.py`) | <1 min | — |
 | RQ3 risk classification (`risk_classifier.py`) | <1 min | — |
-| Total artifact on disk | — | ~5 GB (mostly `index_document.csv`) |
+
 
 **Note**: RQ2 steps 01–04 require access to the raw classified Reddit CSV files containing author identifiers and document text, which are not distributed for privacy reasons. The frozen outputs of each step are provided.
 
@@ -62,7 +62,7 @@ GPU recommended but not required for `03_sentiment_cardiff.py` (RoBERTa inferenc
 
 ### Accessibility
 
-The artifact is publicly available at: **[FILL WITH GITHUB/ZENODO URL]**
+The artifact is publicly available at: https://github.com/dhyeyym/OnlineSafetyActPaper/tree/main
 
 ### Set Up the Environment
 

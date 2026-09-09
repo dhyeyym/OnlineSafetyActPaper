@@ -2,7 +2,7 @@
 
 Artifact for: *Online Safety Regulation Increases Attention to VPNs: Privacy Implications of the UK Online Safety Act*
 
-Proceedings on Privacy Enhancing Technologies 2027(X), 1–22.
+Proceedings on Privacy Enhancing Technologies 2027, 1–22.
 
 ## Repository Structure
 
