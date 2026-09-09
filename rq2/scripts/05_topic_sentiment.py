@@ -21,13 +21,13 @@ MAX_TOPICS = 17
 FIG_HEIGHT = MAX_TOPICS * 0.22
 
 def norm(df):
-    for c in ["created_utc", "author"]:
+    for c in ["doc_id"]:
         if c in df.columns: df[c] = df[c].astype(str).str.strip()
     return df
 
 def topic_sentiment(assignments, sentiment, label_col, group, k):
-    merged = assignments.merge(sentiment[["author", "created_utc", label_col]],
-                               on=["author", "created_utc"], how="inner")
+    merged = assignments.merge(sentiment[["doc_id", label_col]],
+                               on="doc_id", how="inner")
     label_map = TOPIC_LABELS[group]
     rows = []
     for tid in range(k):

@@ -102,12 +102,16 @@ def recount():
             total_assigned += n
     print(f"  Total assigned: {total_assigned:,}, dropped: {len(corpus)-total_assigned:,}")
 
-    c = norm(pd.read_csv(RESULTS_DIR / "rq2_sentiment_cardiff.csv"))
-    g = norm(pd.read_csv(RESULTS_DIR / "rq2_sentiment_gemini.csv"))
+    c = pd.read_csv(RESULTS_DIR / "rq2_sentiment_cardiff.csv")
+    g = pd.read_csv(RESULTS_DIR / "rq2_sentiment_gemini.csv")
     gem_col = next((col for col in ["gemini_label", "label"] if col in g.columns), None)
-    m = c[["author", "created_utc", "cardiff_label"]].drop_duplicates(["author", "created_utc"]).merge(
-        g[["author", "created_utc", gem_col]].drop_duplicates(["author", "created_utc"]),
-        on=["author", "created_utc"])
+    if "doc_id" in c.columns and "doc_id" in g.columns:
+        m = c[["doc_id", "cardiff_label"]].drop_duplicates("doc_id").merge(
+            g[["doc_id", gem_col]].drop_duplicates("doc_id"), on="doc_id")
+    else:
+        keys = [k for k in ["author", "created_utc"] if k in c.columns and k in g.columns]
+        m = c[keys + ["cardiff_label"]].drop_duplicates(keys).merge(
+            g[keys + [gem_col]].drop_duplicates(keys), on=keys)
     agree = (m["cardiff_label"] == m[gem_col]).sum()
     print(f"\nSentiment: {len(m):,} docs, agree {agree/len(m)*100:.1f}%, disagree {len(m)-agree:,} ({(len(m)-agree)/len(m)*100:.1f}%)")
 
