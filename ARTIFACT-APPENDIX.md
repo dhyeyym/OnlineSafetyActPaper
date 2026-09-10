@@ -9,12 +9,12 @@ Requested Badge(s):
 
 ## Description
 
-This artifact accompanies the paper *Online Safety Regulation Increases Attention to VPNs: Privacy Implications of the UK Online Safety Act* by Dhyey Mehta, Eldar Jalilzade, Maksim Kalameyets, Rebecca Owens, Marc Juarez, Stergios Aidinlis, Lei Shi, and Tuğrulcan Elmas, published in Proceedings on Privacy Enhancing Technologies 2027.
+This artifact accompanies the paper *Online Safety Regulation Increases Attention to VPNs: Privacy Implications of the UK Online Safety Act* by Dhyey Mehta, Eldar Jalilzade, Maksim Kalameyets, Rebecca Owens, Marc Juarez, Stergios Aidinlis, Lei Shi, and Tuğrulcan Elmas, published in Proceedings on Privacy Enhancing Technologies 2027(X).
 
 The artifact contains:
 
 1. **LLM classification outputs** for VPN and UK Politics subreddits — relevance labels for all keyword-matched documents, with text and author identifiers removed.
-2. **RQ1 reproduction scripts and data**: R scripts using the `CausalImpact` package to reproduce the Bayesian Structural Time Series analyses reported in Tables 3, 4, 12, 13, 16, and 17, along with the frozen weekly time series, Google Trends data, user count series, and the per-document index (with sensitive fields removed).
+2. **RQ1 reproduction scripts and data**: R scripts using the `CausalImpact` package to reproduce the Bayesian Structural Time Series analyses reported in Tables 3, 4, 12, 13, 16, and 17, plus Python build scripts for regenerating the intermediate time series from raw data.
 3. **RQ2 analysis code and data**: the complete Python pipeline for discourse framing and sentiment analysis, including the UK-resident corpus (identifiers only), LDA topic assignments, sentiment labels from two models (RoBERTa and Gemini), coherence sweep data, topic prevalence, and topic-level sentiment cross-tabulations.
 4. **RQ3 dataset and code**: 69 VPN service privacy-policy records with six extracted privacy markers, monthly UK Google Trends attention, and the deterministic risk classifier script.
 5. **LLM prompts**: exact prompts used for relevance classification, sentiment classification, and topic summarisation (Appendix B of the paper).
@@ -52,9 +52,9 @@ GPU recommended but not required for `03_sentiment_cardiff.py` (RoBERTa inferenc
 | RQ1 Table 13 (`table_13.R`) | ~45 min | <1 MB |
 | RQ1 Table 16 (`table_16.R`) | ~10 min | <1 MB |
 | RQ1 Table 17 (`table_17.R`) | ~20 min | <1 MB |
-| RQ2 verification (`07_validation.py`) | <1 min | — |
+| RQ2 verification (`05_topic_sentiment.py`, `07_validation.py`) | <1 min | <1 MB |
 | RQ3 risk classification (`risk_classifier.py`) | <1 min | — |
-
+| Total artifact on disk | — | ~350 MB (excl. Zenodo-hosted files) |
 
 **Note**: RQ2 steps 01–04 require access to the raw classified Reddit CSV files containing author identifiers and document text, which are not distributed for privacy reasons. The frozen outputs of each step are provided.
 
@@ -62,7 +62,9 @@ GPU recommended but not required for `03_sentiment_cardiff.py` (RoBERTa inferenc
 
 ### Accessibility
 
-The artifact is publicly available at: https://github.com/dhyeyym/OnlineSafetyActPaper/tree/main
+The artifact is publicly available at: **[FILL WITH GITHUB/ZENODO URL]**
+
+The per-document index (`index_document.csv`, 65.8M rows, ~2.3 GB) is hosted separately on Zenodo: **[FILL WITH ZENODO DOI/URL]**
 
 ### Set Up the Environment
 
@@ -101,21 +103,29 @@ Sentiment: 45,541 docs, agree 63.7%, disagree 16,546 (36.3%)
 
 ### Main Results and Claims
 
-#### Main Result 1: RQ1 Causal Impact on Discourse (Tables 3–4)
+The paper's central finding is that the UK Online Safety Act's July 2025 age-verification deadline produced a large, concentrated increase in VPN-related attention — both in Reddit discourse and Google search interest — driven by privacy and surveillance concerns rather than access-seeking, with no corresponding shift toward higher-risk VPN providers.
 
-CausalImpact analysis shows that classified VPN content increased by +328% and classified Politics content increased by +1474% at the Age Verification deadline (July 2025), with no significant change at Royal Assent or Enforcement. UK Google Trends VPN search interest increased by +147%. Reproduced by [Experiments 1–2](#experiment-1-reproduce-table-3).
+The following experiments verify the key quantitative claims supporting this finding.
 
-#### Main Result 2: RQ1 Robustness (Tables 12–13, 16–17)
+#### Main Result 1: Age Verification Drove VPN and Politics Discourse (Table 3 Classified rows, Section 4)
 
-The Age Verification effect holds across user counts (Table 12), all filter levels (Table 13), across post-window lengths (Table 16), and strengthens with UK-residency confidence (Table 17). Reproduced by [Experiments 3–6](#experiment-3-reproduce-table-12).
+VPN classified content increased by +328% and UK-resident VPN classified content by +1265% at the July 2025 deadline. Politics classified content increased by +1474%. These effects were absent at Royal Assent and Enforcement. Reproduced by [Experiment 1](#experiment-1-reproduce-table-3), where the classified content rows match the paper within ±5%.
 
-#### Main Result 3: RQ2 Discourse Framing (Tables 5–6, Figures 4–5)
+#### Main Result 2: Google Trends Confirms the Displacement (Table 4, Section 4)
 
-LDA identifies K=12 VPN topics and K=17 Politics topics. Sentiment is predominantly negative with near-zero pro-OSA sentiment (4–7% positive). Reproduced by [Experiment 7](#experiment-7-reproduce-rq2-topic-prevalence-and-sentiment).
+UK VPN Google Trends search interest increased by +147% (no covariate), +135% (US covariate), and +144% (lag-52 covariate) at the age-verification deadline. All three specifications are reproduced within ±5% by [Experiment 2](#experiment-2-reproduce-table-4).
 
-#### Main Result 4: RQ3 VPN Privacy-Risk Classification (Table 8)
+#### Main Result 3: Effect Holds Across Filter Levels (Table 13 Classified rows, Section 4)
 
-69 VPN services classified into Low (26), Medium (35), and High (8) risk categories. Reproduced by [Experiment 8](#experiment-8-reproduce-rq3-risk-classification).
+The age-verification effect is present across all nine filter levels, with classified content showing the largest effects. Classified rows at July 2025 match within ±5% by [Experiment 4](#experiment-4-reproduce-table-13).
+
+#### Main Result 4: Users Frame VPN Attention Around Privacy, Not Access (Tables 5–6, Section 5)
+
+LDA topic modelling identifies 12 VPN topics and 17 Politics topics. Surveillance- and rights-oriented framings dominate (53.3% of VPN discourse). Sentiment is predominantly negative with near-zero pro-OSA sentiment (4–7% positive). Both classifiers agree on 63.7% of documents, with human adjudication favouring Gemini (63%) over RoBERTa (31%). Reproduced exactly by [Experiment 7](#experiment-7-reproduce-rq2-discourse-framing).
+
+#### Main Result 5: No Shift Toward Higher-Risk Providers (Table 8, Section 6)
+
+69 VPN services are classified into Low (26), Medium (35), and High (8) disclosed privacy-risk categories. All marker counts and risk category totals match exactly by [Experiment 8](#experiment-8-reproduce-rq3-risk-classification).
 
 ### Experiments
 
@@ -126,67 +136,68 @@ setwd("/path/to/artifact")
 
 #### Experiment 1: Reproduce Table 3
 
-- Time: ~10 compute-minutes
+- **Claim**: Classified content and user counts increased sharply at the Age Verification deadline.
 
 ```r
 source("rq1/scripts/table_3.R")
 ```
 
-Reproduces CausalImpact relative effects for VPN and Politics content volume and new-user counts across three OSA milestones at four filter levels. Output: `rq1/data/table3_reproduced.csv`.
+Output: `rq1/data/table3_reproduced.csv`. The classified content rows at July 2025 reproduce within ±5% of the paper. Small-baseline rows (Raw, Unmatched) and pre-deadline milestones (October 2023, March 2025) may vary by up to ±10 percentage points due to BSTS posterior sampling on low-count series.
 
 #### Experiment 2: Reproduce Table 4
 
-- Time: ~5 compute-minutes
+- **Claim**: UK VPN Google Trends search interest increased by +147% at the age-verification deadline.
 
 ```r
 source("rq1/scripts/table_4.R")
 ```
 
-Reproduces CausalImpact on UK VPN Google Trends search interest under three specifications. Output: `rq1/data/table4_reproduced.csv`.
+Output: `rq1/data/table4_reproduced.csv`. All three July 2025 specifications (no covariate, US covariate, lag-52) reproduce within ±5%.
 
 #### Experiment 3: Reproduce Table 12
 
-- Time: ~45 compute-minutes
+- **Claim**: User count effects are consistent across unique, new, and cumulative user metrics.
 
 ```r
 source("rq1/scripts/table_12.R")
 ```
 
-Reproduces user count effects (unique users, new users, cumulative users) across all filter levels. Output: `rq1/data/table12_reproduced.csv`.
+Output: `rq1/data/table12_reproduced.csv`. Classified user-count effects at July 2025 reproduce within ±5%.
 
 #### Experiment 4: Reproduce Table 13
 
-- Time: ~45 compute-minutes
+- **Claim**: The age-verification effect holds across all nine filter levels.
 
 ```r
 source("rq1/scripts/table_13.R")
 ```
 
-Runs 162 CausalImpact models across 2 groups × 9 filter levels × 3 milestones × 3 metrics. Output: `rq1/data/table13_reproduced.csv`.
+Output: `rq1/data/table13_reproduced.csv`. Runs 162 CausalImpact models (2 groups × 9 filters × 3 milestones × 3 metrics). Classified rows at July 2025 reproduce within ±5%.
 
 #### Experiment 5: Reproduce Table 16
 
-- Time: ~10 compute-minutes
+- **Claim**: Effects are robust to post-window length (4, 8, and 12 weeks).
 
 ```r
 source("rq1/scripts/table_16.R")
 ```
 
-Post-window robustness: re-estimates effects at 4-week, 8-week, and 12-week windows. Output: `rq1/data/table16_reproduced.csv`.
+Output: `rq1/data/table16_reproduced.csv`.
 
 #### Experiment 6: Reproduce Table 17
 
-- Time: ~20 compute-minutes
+- **Claim**: Effects strengthen with UK-residency confidence (threshold k=1..5).
 
 ```r
 source("rq1/scripts/table_17.R")
 ```
 
-UK-residency threshold sensitivity across k=1..5. Output: `rq1/data/table17_reproduced.csv`.
+Output: `rq1/data/table17_reproduced.csv`. The k≥1 threshold reproduces within ±5%.
 
-#### Experiment 7: Reproduce RQ2 Topic Prevalence and Sentiment (Tables 5–6, Figure 5)
+#### Experiment 7: Reproduce RQ2 Discourse Framing (Tables 5–6, Figures 4–5)
 
-- Time: <1 minute
+- **Claim**: LDA identifies K=12 VPN topics and K=17 Politics topics; sentiment is predominantly negative with near-zero pro-OSA voices.
+- **Time**: <1 minute
 
 ```bash
 cd rq2/scripts
@@ -194,11 +205,19 @@ python 05_topic_sentiment.py
 python 07_validation.py recount
 ```
 
-Verify that VPN has 12 topics, Politics has 17, prevalence matches Table 5, and sentiment distributions match Table 6.
+Verify that:
+- VPN has 12 topics, Politics has 17 (Table 5)
+- Prevalence percentages match Table 5
+- Sentiment distributions match Table 6
+- Coherence peaks at K=12 for VPN (C_V = 0.533) and K=17 for Politics (C_V = 0.536)
+- Sentiment classifiers agree on 63.7% of documents
+
+All RQ2 numbers reproduce exactly from the frozen data.
 
 #### Experiment 8: Reproduce RQ3 Risk Classification (Table 8)
 
-- Time: <1 minute
+- **Claim**: 69 VPN services classified into Low (26), Medium (35), and High (8) risk categories.
+- **Time**: <1 minute
 
 ```bash
 python rq3/scripts/risk_classifier.py
@@ -222,9 +241,11 @@ Providers: 69
   policy_vagueness: 11
 ```
 
+All counts match the paper exactly.
+
 #### Experiment 9: Verify Classification Outputs
 
-- Time: <1 minute
+- **Time**: <1 minute
 
 ```bash
 python -c "
@@ -237,9 +258,11 @@ for f in sorted(os.listdir('classification_outputs')):
 "
 ```
 
+Verifies that classification output files contain only document identifiers, subreddit names, and relevance labels — no text, usernames, or timestamps.
+
 #### Experiment 10: Verify Coherence Sweep (Figure 4)
 
-- Time: <1 minute
+- **Time**: <1 minute
 
 ```bash
 python -c "
@@ -249,11 +272,11 @@ print(df.to_string(index=False))
 "
 ```
 
-Coherence peaks at K=12 for VPN (C_V = 0.533) and K=17 for Politics (C_V = 0.536).
+Coherence peaks at K=12 for VPN (C_V = 0.533) and K=17 for Politics (C_V = 0.536), matching Figure 4.
 
 ## Limitations
 
-1. **CausalImpact is stochastic.** Bayesian Structural Time Series models involve posterior sampling, so reproduced effect sizes vary across runs. Headline classified effects at the July 2025 Age Verification deadline reproduce within ±5% of the paper's reported values. Small-baseline series (Raw, Unmatched) and user-count series are more sensitive to posterior sampling and may vary by up to ±15 percentage points. All directional findings and statistical significance are preserved.
+1. **CausalImpact is stochastic.** Bayesian Structural Time Series models involve posterior sampling, so reproduced effect sizes vary across runs. Headline classified effects at the July 2025 Age Verification deadline — the paper's central claim — reproduce within ±5% of reported values. Small-baseline series (Raw, Unmatched) and pre-deadline milestones are more sensitive to posterior sampling and may vary by up to ±10 percentage points. All directional findings and statistical significance are preserved.
 
 2. **RQ2 corpus construction requires raw Reddit data.** Steps 01–04 of the RQ2 pipeline require the classified Reddit CSV files containing author identifiers and document text, which are not distributed for privacy reasons. The frozen outputs of each step are provided.
 
@@ -264,6 +287,7 @@ Coherence peaks at K=12 for VPN (C_V = 0.533) and K=17 for Politics (C_V = 0.536
 ## Notes on Reusability
 
 - The **RQ1 R scripts** demonstrate how to apply CausalImpact to weekly content and search-interest time series for causal inference around policy milestones, including window robustness and threshold sensitivity analyses.
+- The **RQ1 Python build scripts** (`build_content_timeseries.py`, `build_user_timeseries.py`, `build_threshold_sweep.py`) show how to construct weekly aggregated time series from a per-document index, enabling researchers with access to the raw Reddit data to regenerate all intermediate data from scratch.
 - The **RQ2 pipeline** (scripts 01–07) is a reusable framework for Reddit discourse analysis combining LDA topic modelling with multi-model sentiment classification.
 - The **RQ3 risk classification** is a deterministic, rule-based framework extensible to additional VPN providers.
 - The **LLM prompts** provide templates for relevance classification and sentiment analysis of policy-related social media discourse.
