@@ -102,3 +102,34 @@ if (!file.exists(user_file)) {
 write.csv(results, file.path(DATA_DIR, "table3_reproduced.csv"), row.names = FALSE)
 cat(sprintf("\nSaved: table3_reproduced.csv (%d rows)\n", nrow(results)))
 print(results, row.names = FALSE)
+
+
+
+# ================================================================
+# MAIN RESULT 1 — Age Verification Drove VPN and Politics Discourse
+# Paper: VPN Classified +328%, VPN Cls(UK) +1265%, Politics Classified +1474%
+# ================================================================
+cat("\n================================================================\n")
+cat("MAIN RESULT 1: Age Verification effect on classified content\n")
+cat("Paper values:  VPN Classified +328%  |  VPN Cls(UK) +1265%  |  Politics Classified +1474%\n")
+cat("================================================================\n")
+paper_vals <- data.frame(
+  group = c("VPN", "VPN", "Politics", "Politics"),
+  filter = c("Classified", "Classified (UK)", "Classified", "Classified (UK)"),
+  column = c("Content", "Content", "Content", "Content"),
+  paper = c(328, 1265, 1474, 1481),
+  stringsAsFactors = FALSE
+)
+for (i in 1:nrow(paper_vals)) {
+  pv <- paper_vals[i, ]
+  row <- results[results$group == pv$group & results$filter == pv$filter &
+                 results$column == pv$column & results$milestone == "Jul2025", ]
+  if (nrow(row) > 0) {
+    ours <- row$relative_effect_pct[1]
+    rel_diff <- abs(ours - pv$paper) / abs(pv$paper) * 100
+    cat(paste0("  >>> ", pv$group, " ", pv$filter, ": current script=", sprintf("%+.1f", ours),
+               "%  paper=", sprintf("%+.0f", pv$paper),
+               "%  (", sprintf("%.1f", rel_diff), "% off)\n"))
+  }
+}
+cat("================================================================\n")

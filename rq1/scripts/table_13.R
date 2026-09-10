@@ -56,3 +56,35 @@ for (grp in groups) {
 }
 write.csv(results, file.path(DATA_DIR, "table13_reproduced.csv"), row.names = FALSE)
 cat(sprintf("\nSaved: table13_reproduced.csv (%d rows)\n", nrow(results)))
+
+
+
+# ================================================================
+# MAIN RESULT 3 — Effect Holds Across Filter Levels
+# Paper: VPN Classified +328%, Politics Classified +1474%
+# ================================================================
+cat("\n================================================================\n")
+cat("MAIN RESULT 3: Classified content at Age Verification (Jul 2025, total)\n")
+cat("================================================================\n")
+paper_vals <- data.frame(
+  group = c("VPN", "VPN", "VPN", "VPN", "Politics", "Politics", "Politics", "Politics"),
+  filter = c("Classified", "Classified (UK)", "Raw", "Matched",
+             "Classified", "Classified (UK)", "Raw", "Matched"),
+  paper = c(328, 1265, 75, 82, 1474, 1481, -7, 121),
+  stringsAsFactors = FALSE
+)
+for (i in 1:nrow(paper_vals)) {
+  pv <- paper_vals[i, ]
+  row <- results[results$group == pv$group & results$filter == pv$filter &
+                 results$metric == "total" & results$milestone == "Jul2025", ]
+  if (nrow(row) > 0) {
+    ours <- row$relative_effect_pct[1]
+    denom <- max(abs(pv$paper), 1)
+    rel_diff <- abs(ours - pv$paper) / denom * 100
+    label <- paste0(pv$group, " ", pv$filter)
+    cat(paste0("  >>> ", formatC(label, width = -25), ": current script=", sprintf("%+.1f", ours),
+               "%  paper=", sprintf("%+.0f", pv$paper),
+               "%  (", sprintf("%.1f", rel_diff), "% off)\n"))
+  }
+}
+cat("================================================================\n")

@@ -71,3 +71,31 @@ for (ms in names(GT_MILESTONES)) {
 write.csv(results, file.path(DATA_DIR, "table4_reproduced.csv"), row.names = FALSE)
 cat("\nSaved: table4_reproduced.csv\n")
 print(results, row.names = FALSE)
+
+
+
+# ================================================================
+# MAIN RESULT 2 — Google Trends Confirms the Displacement
+# Paper: No covariate +147%, US covariate +135%, Lag-52 +144%
+# ================================================================
+cat("\n================================================================\n")
+cat("MAIN RESULT 2: Google Trends at Age Verification deadline\n")
+cat("Paper values:  No covariate +147%  |  US covariate +135%  |  Lag-52 +144%\n")
+cat("================================================================\n")
+paper_vals <- data.frame(
+  spec = c("No covariate", "US covariate", "Lag-52"),
+  paper = c(147, 135, 144),
+  stringsAsFactors = FALSE
+)
+for (i in 1:nrow(paper_vals)) {
+  pv <- paper_vals[i, ]
+  row <- results[results$spec == pv$spec & results$milestone == "Jul2025", ]
+  if (nrow(row) > 0) {
+    ours <- row$relative_effect_pct[1]
+    rel_diff <- abs(ours - pv$paper) / abs(pv$paper) * 100
+    cat(paste0("  >>> ", pv$spec, ": current script=", sprintf("%+.1f", ours),
+               "%  paper=", sprintf("%+.0f", pv$paper),
+               "%  (", sprintf("%.1f", rel_diff), "% off)\n"))
+  }
+}
+cat("================================================================\n")
