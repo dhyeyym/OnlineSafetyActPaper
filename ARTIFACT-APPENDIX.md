@@ -9,7 +9,7 @@ Requested Badge(s):
 
 ## Description
 
-This artifact accompanies the paper *Online Safety Regulation Increases Attention to VPNs: Privacy Implications of the UK Online Safety Act* by Dhyey Mehta, Eldar Jalilzade, Maksim Kalameyets, Rebecca Owens, Marc Juarez, Stergios Aidinlis, Lei Shi, and Tuğrulcan Elmas, published in Proceedings on Privacy Enhancing Technologies 2027(X).
+This artifact accompanies the paper *Online Safety Regulation Increases Attention to VPNs: Privacy Implications of the UK Online Safety Act* by Dhyey Mehta, Eldar Jalilzade, Maksim Kalameyets, Rebecca Owens, Marc Juarez, Stergios Aidinlis, Lei Shi, and Tuğrulcan Elmas, published in Proceedings on Privacy Enhancing Technologies 2027.
 
 The artifact contains:
 
@@ -46,15 +46,15 @@ GPU recommended but not required for `03_sentiment_cardiff.py` (RoBERTa inferenc
 
 | Component | Time | Storage |
 |---|---|---|
-| RQ1 Table 3 (`table_3.R`) | ~10 min | <1 MB |
+| RQ1 Table 3 (`table_3.R`) | ~5 min | <1 MB |
 | RQ1 Table 4 (`table_4.R`) | ~5 min | <1 MB |
-| RQ1 Table 12 (`table_12.R`) | ~45 min | <1 MB |
-| RQ1 Table 13 (`table_13.R`) | ~45 min | <1 MB |
+| RQ1 Table 12 (`table_12.R`) | ~10 min | <1 MB |
+| RQ1 Table 13 (`table_13.R`) | ~10 min | <1 MB |
 | RQ1 Table 16 (`table_16.R`) | ~10 min | <1 MB |
-| RQ1 Table 17 (`table_17.R`) | ~20 min | <1 MB |
+| RQ1 Table 17 (`table_17.R`) | ~10 min | <1 MB |
 | RQ2 verification (`05_topic_sentiment.py`, `07_validation.py`) | <1 min | <1 MB |
 | RQ3 risk classification (`risk_classifier.py`) | <1 min | — |
-| Total artifact on disk | — | ~350 MB (excl. Zenodo-hosted files) |
+| Total artifact on disk | — | ~350 MB |
 
 **Note**: RQ2 steps 01–04 require access to the raw classified Reddit CSV files containing author identifiers and document text, which are not distributed for privacy reasons. The frozen outputs of each step are provided.
 
@@ -62,9 +62,7 @@ GPU recommended but not required for `03_sentiment_cardiff.py` (RoBERTa inferenc
 
 ### Accessibility
 
-The artifact is publicly available at: **[FILL WITH GITHUB/ZENODO URL]**
-
-The per-document index (`index_document.csv`, 65.8M rows, ~2.3 GB) is hosted separately on Zenodo: **[FILL WITH ZENODO DOI/URL]**
+The artifact is publicly available at: https://github.com/dhyeyym/OnlineSafetyActPaper
 
 ### Set Up the Environment
 
@@ -109,19 +107,19 @@ The following experiments verify the key quantitative claims supporting this fin
 
 #### Main Result 1: Age Verification Drove VPN and Politics Discourse (Table 3 Classified rows, Section 4)
 
-VPN classified content increased by +328% and UK-resident VPN classified content by +1265% at the July 2025 deadline. Politics classified content increased by +1474%. These effects were absent at Royal Assent and Enforcement. Reproduced by [Experiment 1](#experiment-1-reproduce-table-3), where the classified content rows match the paper within ±5%.
+VPN classified content increased by +328% and UK-resident VPN classified content by +1265% at the July 2025 deadline. Politics classified content increased by +1474%. These effects were absent at Royal Assent and Enforcement. Reproduced by [Experiment 1](#experiment-1-reproduce-table-3)
 
 #### Main Result 2: Google Trends Confirms the Displacement (Table 4, Section 4)
 
-UK VPN Google Trends search interest increased by +147% (no covariate), +135% (US covariate), and +144% (lag-52 covariate) at the age-verification deadline. All three specifications are reproduced within ±5% by [Experiment 2](#experiment-2-reproduce-table-4).
+UK VPN Google Trends search interest increased by +147% (no covariate), +135% (US covariate), and +144% (lag-52 covariate) at the age-verification deadline. All three specifications are reproduced by [Experiment 2](#experiment-2-reproduce-table-4).
 
 #### Main Result 3: Effect Holds Across Filter Levels (Table 13 Classified rows, Section 4)
 
-The age-verification effect is present across all nine filter levels, with classified content showing the largest effects. Classified rows at July 2025 match within ±5% by [Experiment 4](#experiment-4-reproduce-table-13).
+The age-verification effect is present across all nine filter levels, with classified content showing the largest effects. Classified rows at July 2025 match by [Experiment 4](#experiment-4-reproduce-table-13).
 
 #### Main Result 4: Users Frame VPN Attention Around Privacy, Not Access (Tables 5–6, Section 5)
 
-LDA topic modelling identifies 12 VPN topics and 17 Politics topics. Surveillance- and rights-oriented framings dominate (53.3% of VPN discourse). Sentiment is predominantly negative with near-zero pro-OSA sentiment (4–7% positive). Both classifiers agree on 63.7% of documents, with human adjudication favouring Gemini (63%) over RoBERTa (31%). Reproduced exactly by [Experiment 7](#experiment-7-reproduce-rq2-discourse-framing).
+LDA topic modelling identifies 12 VPN topics and 17 Politics topics. Surveillance- and rights-oriented framings dominate (53.3% of VPN discourse). Sentiment is predominantly negative with near-zero pro-OSA sentiment (4–7% positive). Both classifiers i.e. Gemini and LDA agree on 63.7% of documents, Reproduced exactly by [Experiment 7](#experiment-7-reproduce-rq2-discourse-framing).
 
 #### Main Result 5: No Shift Toward Higher-Risk Providers (Table 8, Section 6)
 
@@ -276,7 +274,7 @@ Coherence peaks at K=12 for VPN (C_V = 0.533) and K=17 for Politics (C_V = 0.536
 
 ## Limitations
 
-1. **CausalImpact is stochastic.** Bayesian Structural Time Series models involve posterior sampling, so reproduced effect sizes vary across runs. Headline classified effects at the July 2025 Age Verification deadline — the paper's central claim — reproduce within ±5% of reported values. Small-baseline series (Raw, Unmatched) and pre-deadline milestones are more sensitive to posterior sampling and may vary by up to ±10 percentage points. All directional findings and statistical significance are preserved.
+1. **CausalImpact is stochastic.** Bayesian Structural Time Series models involve posterior sampling, so reproduced effect sizes vary across runs. Headline classified effects at the July 2025 Age Verification deadline — the paper's central claim — reproduce within ±5% of reported values. Small-baseline series (Raw, Unmatched) and pre-deadline milestones are more sensitive to posterior sampling and may vary a bit more. All directional findings and statistical significance are preserved.
 
 2. **RQ2 corpus construction requires raw Reddit data.** Steps 01–04 of the RQ2 pipeline require the classified Reddit CSV files containing author identifiers and document text, which are not distributed for privacy reasons. The frozen outputs of each step are provided.
 

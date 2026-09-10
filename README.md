@@ -130,7 +130,7 @@ python rq1/scripts/build_content_timeseries.py \
   --original-dir /path/to/original/
 ```
 
-**2. User time series** — generates all `*_user_timeseries*.csv` files:
+**2. User time series** — generates `table12_user_weekly_series.csv` and all `*_user_timeseries*.csv` files:
 ```bash
 python rq1/scripts/build_user_timeseries.py \
   --index /path/to/index_document_full.csv \
