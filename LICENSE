@@ -2,7 +2,7 @@ This artifact contains both code and data, licensed separately.
 
 CODE LICENSE (MIT)
 ==================
-All Python scripts in rq2/scripts/ are released under the MIT License.
+All scripts are released under the MIT License.
 
 Copyright (c) 2027 Dhyey Mehta, Eldar Jalilzade, Maksim Kalameyets,
 Rebecca Owens, Marc Juarez, Stergios Aidinlis, Lei Shi, Tuğrulcan Elmas
