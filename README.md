@@ -101,6 +101,10 @@ A Dockerfile is included for a portable, one-command build:
 
 ```bash
 docker build -t osa-artifact .
+```
+
+**Linux / macOS:**
+```bash
 docker run --rm -v "$PWD:/artifact" -w /artifact osa-artifact bash -c '
   for t in 3 4 12 13 16 17; do
     echo "===== Table $t ====="
@@ -109,6 +113,11 @@ docker run --rm -v "$PWD:/artifact" -w /artifact osa-artifact bash -c '
   cd rq2/scripts && python 07_validation.py recount
   cd ../.. && python rq3/scripts/risk_classifier.py
 '
+```
+
+**Windows (CMD):**
+```cmd
+docker run --rm -v "%cd%:/artifact" -w /artifact osa-artifact bash -c "for t in 3 4 12 13 16 17; do echo '===== Table '$t' ====='; Rscript rq1/scripts/table_$t.R; done; cd rq2/scripts && python 07_validation.py recount; cd ../.. && python rq3/scripts/risk_classifier.py"
 ```
 
 ## Quick Verification (manual)
