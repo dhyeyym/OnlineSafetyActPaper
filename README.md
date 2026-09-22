@@ -8,6 +8,7 @@ Proceedings on Privacy Enhancing Technologies 2027, 1–22.
 
 ```
 ├── ARTIFACT-APPENDIX.md
+├── Dockerfile                  Reproducible build environment
 ├── LICENSE
 ├── requirements.txt
 │
@@ -94,7 +95,23 @@ Proceedings on Privacy Enhancing Technologies 2027, 1–22.
         └── vpn_privacy_risk_google_trends.csv
 ```
 
-## Quick Verification
+## Quick Verification (Docker — recommended)
+
+A Dockerfile is included for a portable, one-command build:
+
+```bash
+docker build -t osa-artifact .
+docker run --rm -v "$PWD:/artifact" -w /artifact osa-artifact bash -c '
+  for t in 3 4 12 13 16 17; do
+    echo "===== Table $t ====="
+    Rscript rq1/scripts/table_$t.R
+  done
+  cd rq2/scripts && python 07_validation.py recount
+  cd ../.. && python rq3/scripts/risk_classifier.py
+'
+```
+
+## Quick Verification (manual)
 
 **RQ1** — open in RStudio, set working directory to the artifact root:
 ```r
