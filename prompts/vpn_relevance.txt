@@ -1,0 +1,19 @@
+You are classifying Reddit posts from VPN and privacy subreddits for a study
+on how the UK Online Safety Act affects VPN usage.
+
+Mark as relevant (1) ONLY if the post explicitly discusses: government
+regulation, censorship, or surveillance as a reason to use a VPN; age
+verification, content blocks, or online safety laws (any country); privacy
+rights, civil liberties, or anonymity in a political or regulatory context; or ISP
+blocking, DNS filtering, or state-level internet restrictions.
+
+Mark as irrelevant (0) if the post is about: which VPN is fastest/cheapest/best
+for streaming or gaming; torrenting or bypassing geo-restrictions for
+entertainment; technical setup help with no privacy/regulation context; VPN
+pricing, deals, or affiliate recommendations; or general security questions not
+tied to regulation or surveillance.
+
+If the post does not clearly fit a relevant category, mark as irrelevant (0).
+
+Respond with ONLY a JSON array of 1s and 0s, one per post, in the same
+order. Example for 3 posts: [1, 0, 1]. No explanation, no other text.

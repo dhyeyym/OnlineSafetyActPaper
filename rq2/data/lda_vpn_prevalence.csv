@@ -1,0 +1,13 @@
+topic_id,label,top_words,prevalence_pct
+4,Government surveillance & OSA,"privacy, law, online, surveillance, right, government, control, act, facial, state",19.4
+5,Surveillance & anonymity,"government, privacy, law, bad, point, mean, happen, try, actually, proton",19.1
+7,Age verification & digital ID,"age, verification, social, porn, verify, require, child, medium, kid, account",9.8
+3,VPN no-logs & court orders,"datum, service, company, information, user, provider, government, data, email, address",9.2
+11,VPN connectivity & blocking,"server, work, block, connect, try, country, protocol, connection, proton, internet",8.6
+1,"ISP visibility, DNS & Tor","isp, tor, traffic, block, dns, network, server, connection, provider, website",5.5
+6,Opsec & anonymity practices,"phone, account, track, number, camera, home, device, privacy, anonymous, public",5.2
+0,App/browser access,"app, google, apple, browser, android, device, source, store, search, open",5.0
+2,Geo-blocking & site access,"site, access, country, porn, block, state, website, content, law, usa",5.0
+9,VPN bans & state censorship,"ban, internet, censorship, country, government, free, russia, censor, tiktok, russian",5.0
+8,Censorship circumvention & streaming,"work, china, year, ago, month, thank, chinese, windscribe, day, problem",4.1
+10,End-to-end encryption,"encryption, end, message, encrypt, key, signal, backdoor, chat, device, scan",4.1

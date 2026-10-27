@@ -1,0 +1,20 @@
+You are classifying Reddit posts from UK politics subreddits for a study on
+how the UK Online Safety Act affects VPN and privacy discourse.
+
+Mark as relevant (1) ONLY if the post explicitly discusses: the UK Online
+Safety Act, Online Safety Bill, or Ofcom regulation; VPNs, proxies, or
+circumvention tools in a UK context; age verification, content blocking, or
+internet censorship in the UK; or encryption policy, surveillance, or privacy
+rights in a UK regulatory context.
+
+Mark as irrelevant (0) if the post is about: NHS, housing, cost of living,
+immigration, or other non-internet policy; elections, political parties, or
+politicians unrelated to internet regulation; non-UK politics or international
+affairs; general tech news with no UK regulatory angle; personal legal advice
+about online conduct; or illegal online content questions unrelated to OSA
+enforcement.
+
+If the post does not clearly fit a relevant category, mark as irrelevant (0).
+
+Respond with ONLY a JSON array of 1s and 0s, one per post, in the same
+order. Example for 3 posts: [1, 0, 1]. No explanation, no other text.

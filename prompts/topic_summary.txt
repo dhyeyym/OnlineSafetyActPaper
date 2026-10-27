@@ -1,0 +1,7 @@
+You are analysing Reddit posts from UK users discussing the UK Online
+Safety Act (OSA). Below are posts from a single discussion cluster.
+
+Summarise 1. What specific concerns or arguments do users raise? 2. What
+examples, analogies, or real-world cases do they cite? 3. What is the overall
+tone and framing? Be concrete and specific. Quote or paraphrase specific
+points where useful.
